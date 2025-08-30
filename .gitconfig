@@ -1,0 +1,6 @@
+[user]
+	name=Kirill Shchetiniuk (aka Spagetik)
+	email=kirill.shchetiniuk@gmail.com
+[alias]
+	st=status
+	unstage=reset HEAD --
