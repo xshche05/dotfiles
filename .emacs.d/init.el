@@ -27,11 +27,22 @@
 (ido-mode 1)
 (ido-everywhere 1)
 
+;; theme
+(use-package gruber-darker-theme
+  :ensure t)
+
+;; font
+(set-frame-font "Iosevka 14" nil t)
+
+;; yes or no -> y or n
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 ;; ========== Dired Mode ==========
 
 (defun dired-mode-hook-setup ()
   ;; Highlight the selected line
-  (hl-line-mode 1))
+  (hl-line-mode 1)
+  (display-line-numbers-mode -1))
 
 ;; Highlight the current line in Dired
 (add-hook 'dired-mode-hook 'dired-mode-hook-setup)
@@ -67,6 +78,14 @@
     (message "Multiple Cursors enabled.")))
 
 
+;; ======== Eat ===================
+
+(use-package eat
+  :ensure t
+  :hook (eat-mode . (lambda () (display-line-numbers-mode -1))))
+
+(defalias 'cmd 'eat)
+
 ;; ======== Company ===============
 
 (use-package elpy
@@ -78,6 +97,12 @@
   :ensure t
   :config
   (global-company-mode 1))
+
+
+;; ======== Magit =================
+
+(use-package magit
+  :ensure t)
 
 ;; ======== Custom ================
 
