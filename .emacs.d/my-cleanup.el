@@ -1,4 +1,4 @@
-;; My cleanup functions 
+;; My cleanup functions
 
 ;; --- The Persistent Variable ---
 
@@ -8,6 +8,11 @@ You can manage this list with the functions
 'my/cleanup-enable-for-current-file' and
 'my/cleanup-disable-for-current-file', or edit it directly
 via 'M-x customize-variable'."
+  :type '(repeat string)
+  :group 'files)
+
+(defcustom my/cleanup-enabled-files-indent '()
+  "TODO DOC"
   :type '(repeat string)
   :group 'files)
 
@@ -23,6 +28,14 @@ via 'M-x customize-variable'."
         (message "Auto-cleanup ENABLED for: %s" abs-path))
     (message "Buffer is not visiting a file.")))
 
+(defun my/cleanup-buffer-enable-indent ()
+  "TODO DOC"
+  (interactive)
+  (if-let ((filename (buffer-file-name)))
+      (let ((abs-path (expand-file-name filename)))
+        (add-to-list 'my/cleanup-enabled-files-indent abs-path))))
+
+
 (defun my/cleanup-buffer-disable ()
   "Remove the current file from the auto-cleanup list."
   (interactive)
@@ -32,6 +45,14 @@ via 'M-x customize-variable'."
         (customize-save-variable 'my/cleanup-enabled-files my/cleanup-enabled-files)
         (message "Auto-cleanup DISABLED for: %s" abs-path))
     (message "Buffer is not visiting a file.")))
+
+(defun my/cleanup-buffer-disable-indent ()
+  "TODO DOC"
+  (interactive)
+  (if-let ((filename (buffer-file-name)))
+      (let ((abs-path (expand-file-name filename)))
+        (setq my/cleanup-enabled-files-indent (delete abs-path my/cleanup-enabled-files-indent))
+        (customize-save-variable 'my/cleanup-enabled-files-indent my/cleanup-enabled-files-indent))))
 
 ;; --- Hook Function ---
 
@@ -44,13 +65,17 @@ This function only runs if the current file's path is in the
 
     ;; save-excursion keeps the cursor from jumping around.
     (save-excursion
-      (message "Auto-formatting buffer...")
+      (message "Auto-formatting the buffer...")
       (whitespace-mode -1)
-      ;; 1. Replace tabs with spaces.
-      (untabify (point-min) (point-max))
 
-      ;; 2. Re-indent the entire file.
-      (indent-region (point-min) (point-max))
+      (when (and buffer-file-name (member (expand-file-name buffer-file-name) my/cleanup-enabled-files-indent))
+        (message "Auto-indenting the buffer...")
+
+        ;; 1. Replace tabs with spaces.
+        (untabify (point-min) (point-max))
+
+        ;; 2. Re-indent the entire file.
+        (indent-region (point-min) (point-max)))
 
       ;; 3. Remove trailing whitespace.
       (delete-trailing-whitespace)

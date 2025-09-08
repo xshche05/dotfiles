@@ -31,11 +31,12 @@
 (use-package gruber-darker-theme
   :ensure t)
 
-;; font
-(set-frame-font "Iosevka 14" nil t)
-
 ;; yes or no -> y or n
 (defalias 'yes-or-no-p 'y-or-n-p)
+
+;; font
+(set-face-attribute 'default nil :font "Iosevka" :height 140)
+
 
 ;; ========== Dired Mode ==========
 
@@ -51,6 +52,7 @@
 ;; ========== Clean Up ============
 
 (load "~/.emacs.d/my-cleanup.el")
+
 
 ;; =========== Smex ===============
 
@@ -78,14 +80,6 @@
     (message "Multiple Cursors enabled.")))
 
 
-;; ======== Eat ===================
-
-(use-package eat
-  :ensure t
-  :hook (eat-mode . (lambda () (display-line-numbers-mode -1))))
-
-(defalias 'cmd 'eat)
-
 ;; ======== Company ===============
 
 (use-package elpy
@@ -103,6 +97,34 @@
 
 (use-package magit
   :ensure t)
+
+
+;; ========== Eat ================
+
+(use-package eat
+  :ensure t
+  :hook (eat-mode . (lambda () (display-line-numbers-mode -1))))
+
+(defalias 'cmd 'eat)
+
+(defun my/eat-exit-nopromt ()
+  (interactive)
+  (dolist (proc (process-list))
+    (when (and (process-live-p proc)
+               (string-match-p "\\*eat\\*" (process-name proc)))
+      (message "terminating the Eat process..")
+      (set-process-query-on-exit-flag proc nil))))
+
+
+;; ======= Emacs exit handlers ====
+
+(defun my/emacs-kill ()
+  (interactive)
+  (my/eat-exit-nopromt)
+  (save-buffers-kill-terminal))
+
+(global-set-key (kbd "C-x C-c") #'my/emacs-kill)
+
 
 ;; ======== Custom ================
 
