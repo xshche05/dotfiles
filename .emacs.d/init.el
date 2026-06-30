@@ -50,6 +50,12 @@
   (global-set-key (kbd "<mouse-5>")
                   (lambda () (interactive) (scroll-up 5))))
 
+;; my modules
+
+(add-to-list 'load-path user-emacs-directory)
+
+(require 'clipboard)
+(require 'my-cleanup)
 
 ;; ========== Dired Mode ==========
 
@@ -60,11 +66,6 @@
 
 ;; Highlight the current line in Dired
 (add-hook 'dired-mode-hook 'dired-mode-hook-setup)
-
-
-;; ========== Clean Up ============
-
-(load "~/.emacs.d/my-cleanup.el")
 
 
 ;; =========== Smex ===============

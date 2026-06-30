@@ -11,6 +11,7 @@
  '(font-use-system-font t)
  '(gdb-non-stop-setting t)
  '(inhibit-startup-screen t)
+ '(my/autoindent-enabled-files '("/home/kirillshchetiniuk/my-proj/main.py"))
  '(my/cleanup-enabled-files
    '("/home/kshcheti/images/test_img/img.xml" "/home/kshcheti/img.xml"
      "/home/kshcheti/libvirt/src/qemu/qemu_conf.c"
@@ -20,9 +21,10 @@
      "/home/kshcheti/dotfiles/.emacs.d/init.el"
      "/home/xshche05/.emacs.d/init.el"))
  '(my/whitespace-disabled-files
-   '("/home/kirillshchetiniuk/dotfiles/.emacs.d/my-cleanup.el"))
+   '("/home/kirillshchetiniuk/my-proj/main.py"
+     "/home/kirillshchetiniuk/dotfiles/.emacs.d/my-cleanup.el"))
  '(package-selected-packages
-   '(eat elpy flycheck gruber-darker-theme lsp-mode magit
+   '(eat elpy flycheck gruber-darker-theme lsp-mode lsp-ui magit
 	 multiple-cursors smex))
  '(safe-local-variable-values '((c-indent-level . 4)))
  '(warning-minimum-level :error))
