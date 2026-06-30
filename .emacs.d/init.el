@@ -1,3 +1,4 @@
+
 ;; ============ Packages ==========
 
 (require 'package)
@@ -36,6 +37,18 @@
 
 ;; font
 (set-face-attribute 'default nil :font "Iosevka" :height 140)
+
+;; mouse
+
+;; Clicking, dragging & region select in the terminal
+(xterm-mouse-mode 1)
+
+;; Make the scroll wheel scroll a few lines at a time
+(unless (display-graphic-p)
+  (global-set-key (kbd "<mouse-4>")
+                  (lambda () (interactive) (scroll-down 5)))
+  (global-set-key (kbd "<mouse-5>")
+                  (lambda () (interactive) (scroll-up 5))))
 
 
 ;; ========== Dired Mode ==========
@@ -82,15 +95,15 @@
 
 ;; ======== Company ===============
 
-(use-package elpy
-  :ensure t
-  :init
-  (elpy-enable))
+;; (use-package elpy
+;;   :ensure t
+;;   :init
+;;   (elpy-enable))
 
-(use-package company
-  :ensure t
-  :config
-  (global-company-mode 1))
+;; (use-package company
+;;   :ensure t
+;;   :config
+;;   (global-company-mode 1))
 
 
 ;; ======== Magit =================
@@ -125,6 +138,25 @@
 
 (global-set-key (kbd "C-x C-c") #'my/emacs-kill)
 
+
+;; ======== LSP-MODE =============
+
+
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :init   (setq lsp-keymap-prefix "C-c l")
+  :config (setq lsp-idle-delay 0.5))
+
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  :config (setq lsp-ui-doc-position 'at-point
+                lsp-ui-sideline-show-hover t))
+
+
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  :config (setq lsp-ui-doc-position 'at-point
+                lsp-ui-sideline-show-hover t))
 
 ;; ======== Custom ================
 
